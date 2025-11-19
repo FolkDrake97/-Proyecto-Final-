@@ -3,26 +3,42 @@ class Enrollment {
     private $conn;
     private $table = 'inscripciones';
 
+    public $id;
+    public $id_estudiante;
+    public $id_materia;
+    public $estado;
+    public $fecha_solicitud;
+    public $motivo_rechazo;
+
     public function __construct($db) {
         $this->conn = $db;
     }
 
-    // Crear solicitud de inscripción
-    public function create($studentId, $subjectId) {
-        $query = "INSERT INTO " . $this->table . " 
-                  (id_estudiante, id_materia, estado, fecha_solicitud)
-                  VALUES (?, ?, 'pendiente', NOW())";
+    // Métodos básicos para reportes
+    public function getTotalInscripciones() {
+        $query = "SELECT COUNT(*) as total FROM " . $this->table;
         $stmt = $this->conn->prepare($query);
-        return $stmt->execute([$studentId, $subjectId]);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
     }
 
-    // Actualizar estado
-    public function updateStatus($id, $status, $motivo = null) {
-        $query = "UPDATE " . $this->table . " 
-                  SET estado = ?, motivo_rechazo = ?, fecha_respuesta = NOW()
-                  WHERE id_inscripcion = ?";
+    public function getInscripcionesPorEstado($estado) {
+        $query = "SELECT COUNT(*) as total FROM " . $this->table . " WHERE estado = ?";
         $stmt = $this->conn->prepare($query);
-        return $stmt->execute([$status, $motivo, $id]);
+        $stmt->bindParam(1, $estado);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+
+    public function getEnrollmentStats() {
+        return [
+            'total' => $this->getTotalInscripciones(),
+            'aprobadas' => $this->getInscripcionesPorEstado('aprobada'),
+            'pendientes' => $this->getInscripcionesPorEstado('pendiente'),
+            'rechazadas' => $this->getInscripcionesPorEstado('rechazada')
+        ];
     }
 }
 ?>
