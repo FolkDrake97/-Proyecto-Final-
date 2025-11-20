@@ -1,0 +1,548 @@
+# -Proyecto-Final-
+# 🎓 Plataforma Académica
+
+Sistema de gestión educativa completo desarrollado en PHP, MySQL, Bootstrap 5 y JavaScript. Permite la administración de usuarios, materias, actividades, calificaciones y un sistema de logros para estudiantes.
+
+---
+
+## 📋 Tabla de Contenidos
+
+- [Características](#-características)
+- [Tecnologías](#-tecnologías)
+- [Requisitos](#-requisitos)
+- [Instalación](#-instalación)
+- [Configuración](#-configuración)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Usuarios de Prueba](#-usuarios-de-prueba)
+- [Funcionalidades por Rol](#-funcionalidades-por-rol)
+- [Capturas de Pantalla](#-capturas-de-pantalla)
+- [API Endpoints](#-api-endpoints)
+- [Contribuir](#-contribuir)
+- [Licencia](#-licencia)
+
+---
+
+## ✨ Características
+
+### 🔐 Sistema de Autenticación
+- Login seguro con sesiones PHP
+- Registro de estudiantes
+- Recuperación de contraseña
+- Tres roles: Administrador, Maestro y Estudiante
+
+### 👨‍💼 Panel de Administrador
+- Gestión completa de usuarios (CRUD)
+- Gestión de materias
+- Estadísticas del sistema
+- Vista de usuarios recientes
+
+### 👨‍🏫 Panel de Maestro
+- Gestión de materias asignadas
+- Crear y administrar actividades/tareas
+- Aprobar/rechazar solicitudes de inscripción
+- Registrar calificaciones
+- Ver detalles de entregas
+- Estadísticas de sus materias
+
+### 👨‍🎓 Panel de Estudiante
+- Ver materias disponibles
+- Solicitar inscripciones
+- Ver tareas y actividades
+- Consultar calificaciones
+- Gráficas de rendimiento académico
+- Sistema de logros y gamificación
+- Ranking de estudiantes
+
+### 🏆 Sistema de Logros
+- **Primera Entrega** 🎯 - Entrega tu primera tarea
+- **Promedio Alto** ⭐ - Mantén un promedio ≥ 90
+- **Racha Perfecta** 🔥 - 5 tareas consecutivas a tiempo
+- **Estudiante Constante** 💪 - Completa todas las actividades del mes
+- **Excelencia Académica** 🏆 - Obtén una calificación perfecta (100)
+
+### 📊 Visualización de Datos
+- Gráficas con Chart.js
+- Distribución de calificaciones
+- Promedios por materia
+- Estado de tareas
+- Ranking de estudiantes
+
+---
+
+## 🛠️ Tecnologías
+
+### Backend
+- **PHP 7.4+** - Lenguaje principal
+- **MySQL/MariaDB** - Base de datos
+- **PDO** - Conexión segura a BD
+
+### Frontend
+- **HTML5** - Estructura
+- **CSS3** - Estilos personalizados
+- **Bootstrap 5.3** - Framework CSS
+- **JavaScript ES6** - Interactividad
+- **Chart.js** - Gráficas
+- **Font Awesome** - Iconos
+- **Bootstrap Icons** - Iconos adicionales
+
+### Seguridad
+- Sesiones PHP seguras
+- Sanitización de inputs
+- Prepared statements (PDO)
+- Validación de roles
+- Hash de contraseñas
+
+---
+
+## 📦 Requisitos
+
+- **PHP**: 7.4 o superior
+- **MySQL/MariaDB**: 5.7 o superior
+- **Servidor Web**: Apache/Nginx
+- **Extensiones PHP requeridas**:
+  - `pdo_mysql`
+  - `mysqli`
+  - `session`
+  - `json`
+
+---
+
+## 🚀 Instalación
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/tu-usuario/plataforma-academica.git
+cd plataforma-academica
+```
+
+### 2. Configurar la base de datos
+
+Importa el archivo SQL incluido:
+
+```bash
+mysql -u root -p < database/plataforma_academica.sql
+```
+
+### 3. Configurar credenciales
+
+Edita el archivo `config/database.php`:
+
+```php
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'plataforma_academica');
+define('DB_USER', 'tu_usuario');
+define('DB_PASS', 'tu_contraseña');
+```
+
+### 4. Configurar URL base
+
+En `config/database.php`, ajusta la URL si es necesario:
+
+```php
+define('BASE_URL', 'http://localhost/plataforma-academica');
+```
+
+### 5. Permisos de carpetas
+
+```bash
+chmod 755 -R proyecto_integrador/
+chmod 777 -R proyecto_integrador/uploads/
+```
+
+---
+
+## ⚙️ Configuración
+
+### Estructura de Base de Datos
+
+La base de datos incluye las siguientes tablas:
+
+- `usuarios` - Información de usuarios (admin, maestros, estudiantes)
+- `materias` - Materias disponibles
+- `inscripciones` - Relación estudiante-materia
+- `actividades` - Tareas y exámenes
+- `calificaciones` - Notas de estudiantes
+- `logros` - Sistema de logros
+- `usuarios_logros` - Logros desbloqueados por estudiante
+- `password_reset` - Tokens de recuperación de contraseña
+
+### Variables de Entorno
+
+Puedes configurar:
+
+```php
+// config/database.php
+define('PASSWORD_MIN_LENGTH', 6);    // Longitud mínima de contraseña
+define('APP_NAME', 'Plataforma Académica');
+date_default_timezone_set('America/Mexico_City');
+```
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+proyecto_integrador/
+│
+├── api/                          # API REST endpoints
+│   ├── actividades/
+│   │   └── crear.php
+│   ├── calificaciones/
+│   │   └── guardar.php
+│   ├── inscripciones/
+│   │   ├── aprobar.php
+│   │   ├── rechazar.php
+│   │   └── solicitar.php
+│   └── usuarios/
+│       ├── crear.php
+│       ├── editar.php
+│       └── eliminar.php
+│
+├── assets/                       # Recursos estáticos
+│   ├── css/
+│   │   └── style.css            # Estilos principales
+│   ├── js/
+│   │   ├── main.js
+│   │   └── validaciones.js
+│   └── img/
+│
+├── config/                       # Configuración
+│   ├── config.php
+│   └── database.php             # Conexión DB y singleton
+│
+├── includes/                     # Archivos compartidos
+│   ├── auth.php                 # Autenticación
+│   ├── conexion.php             # Clase Conexion
+│   ├── header.php               # Header HTML
+│   ├── footer.php               # Footer HTML
+│   ├── helpers.php              # Funciones auxiliares
+│   ├── logros.php               # Sistema de logros
+│   ├── menu.php                 # Menú dinámico por rol
+│   └── validators.php           # Validaciones
+│
+├── views/                        # Vistas de la aplicación
+│   ├── actividades/
+│   │   ├── detalle.php
+│   │   └── lista.php
+│   ├── calificaciones/
+│   │   ├── graficas_estudiante.php
+│   │   ├── mis_calificaciones.php
+│   │   └── registrar.php
+│   ├── inscripciones/
+│   │   └── solicitudes.php
+│   ├── logros/
+│   │   └── mis_logros.php
+│   ├── materias/
+│   │   ├── crear.php
+│   │   ├── editar.php
+│   │   └── lista.php
+│   ├── usuarios/
+│   │   ├── crear.php
+│   │   ├── editar.php
+│   │   ├── lista.php
+│   │   └── perfil.php
+│   ├── dashboard_administrador.php
+│   ├── dashboard_estudiante.php
+│   └── dashboard_maestro.php
+│
+├── index.php                     # Punto de entrada
+├── login.php                     # Página de login
+├── logout.php                    # Cerrar sesión
+├── signup_page.php               # Registro de estudiantes
+├── forgot_password.php           # Recuperar contraseña
+├── reset_password.php            # Restablecer contraseña
+└── README.md                     # Este archivo
+```
+
+---
+
+## 👥 Usuarios de Prueba
+
+### 🔑 Credenciales por Defecto
+
+Usa estas cuentas para probar el sistema:
+
+| Rol | Email | Contraseña |
+|-----|-------|------------|
+| **👨‍💼 Administrador** | `admin@plataforma.com` | `123456` |
+| **👨‍🏫 Maestro** | `maria.gonzalez@plataforma.com` | `123456` |
+| **👨‍🎓 Estudiante** | `pedro.lopez@plataforma.com` | `123456` |
+
+> ⚠️ **IMPORTANTE**: Cambia estas contraseñas en producción.
+
+---
+
+## 🎯 Funcionalidades por Rol
+
+### 👨‍💼 Administrador
+
+✅ **Dashboard**
+- Total de usuarios
+- Total de materias
+- Actividades activas
+- Desglose por roles
+
+✅ **Gestión de Usuarios**
+- Crear usuarios (admin, maestro, estudiante)
+- Editar información de usuarios
+- Desactivar usuarios
+- Ver usuarios recientes
+
+✅ **Gestión de Materias**
+- Crear materias
+- Asignar maestros a materias
+- Ver todas las materias
+
+---
+
+### 👨‍🏫 Maestro
+
+✅ **Dashboard**
+- Mis materias
+- Solicitudes pendientes
+- Total de estudiantes
+- Actividades por calificar
+
+✅ **Materias**
+- Ver mis materias asignadas
+- Ver estudiantes inscritos
+
+✅ **Actividades**
+- Crear tareas/exámenes/proyectos
+- Definir ponderación
+- Establecer fecha límite
+- Ver estadísticas de entregas
+
+✅ **Calificaciones**
+- Registrar calificaciones
+- Agregar comentarios
+- Ver historial de calificaciones
+- Gráficas de distribución
+
+✅ **Inscripciones**
+- Aprobar solicitudes de estudiantes
+- Rechazar con motivo
+- Ver solicitudes pendientes
+
+---
+
+### 👨‍🎓 Estudiante
+
+✅ **Dashboard**
+- Materias inscritas
+- Tareas pendientes
+- Promedio general
+- Solicitudes en proceso
+
+✅ **Materias**
+- Ver materias disponibles
+- Solicitar inscripción
+- Ver mis materias inscritas
+
+✅ **Actividades**
+- Ver todas mis tareas
+- Estado (pendiente/entregada/calificada/vencida)
+- Días restantes para entrega
+- Filtros por estado
+
+✅ **Calificaciones**
+- Ver mis calificaciones
+- Promedio por materia
+- Promedio general
+- Comentarios del maestro
+
+✅ **Gráficas**
+- Distribución de calificaciones (gráfica de dona)
+- Promedios por materia (barras)
+- Estado de tareas (barras horizontales)
+
+✅ **Logros**
+- Ver logros desbloqueados
+- Ver progreso de logros
+- Ranking de estudiantes
+- Notificaciones de nuevos logros
+
+---
+
+## 📸 Capturas de Pantalla
+
+### Login
+![Login](docs/screenshots/login.png)
+
+### Dashboard Administrador
+![Dashboard Admin](docs/screenshots/dashboard_admin.png)
+
+### Dashboard Estudiante
+![Dashboard Estudiante](docs/screenshots/dashboard_estudiante.png)
+
+### Sistema de Logros
+![Logros](docs/screenshots/logros.png)
+
+### Gráficas Académicas
+![Gráficas](docs/screenshots/graficas.png)
+
+---
+
+## 🔌 API Endpoints
+
+### Autenticación
+```
+POST /login.php
+POST /signup_page.php
+POST /forgot_password.php
+POST /reset_password.php
+GET  /logout.php
+```
+
+### Usuarios (Solo Admin)
+```
+POST   /api/usuarios/crear.php
+PUT    /api/usuarios/editar.php
+DELETE /api/usuarios/eliminar.php
+```
+
+### Actividades (Maestro)
+```
+POST /api/actividades/crear.php
+```
+
+### Calificaciones (Maestro)
+```
+POST /api/calificaciones/guardar.php
+```
+
+### Inscripciones
+```
+POST /api/inscripciones/solicitar.php    (Estudiante)
+PUT  /api/inscripciones/aprobar.php      (Maestro)
+PUT  /api/inscripciones/rechazar.php     (Maestro)
+```
+
+### Formato de Respuesta JSON
+
+```json
+{
+  "exito": true,
+  "datos": { ... },
+  "mensaje": "Operación exitosa"
+}
+```
+
+---
+
+## 🧪 Testing
+
+### Probar funcionalidades:
+
+1. **Login como Administrador**
+   - Crear un nuevo usuario
+   - Crear una nueva materia
+   - Ver estadísticas
+
+2. **Login como Maestro**
+   - Crear una actividad
+   - Aprobar una inscripción
+   - Calificar estudiantes
+
+3. **Login como Estudiante**
+   - Solicitar inscripción a materia
+   - Ver mis tareas
+   - Ver mis calificaciones
+   - Ver mis logros
+
+---
+
+## 🐛 Solución de Problemas
+
+### Error: "No se puede conectar a la base de datos"
+**Solución**: Verifica las credenciales en `config/database.php`
+
+### Error: "Headers already sent"
+**Solución**: Asegúrate de no tener espacios antes de `<?php` en los archivos
+
+### Los estilos no cargan
+**Solución**: Verifica que `BASE_URL` esté correctamente configurada
+
+### Las sesiones no funcionan
+**Solución**: Verifica permisos de la carpeta de sesiones de PHP
+
+---
+
+## 🔒 Seguridad
+
+### Implementado:
+- ✅ Prepared statements (PDO)
+- ✅ Sanitización de inputs
+- ✅ Validación de roles
+- ✅ Sesiones seguras
+- ✅ CSRF protection básico
+
+### Recomendaciones para Producción:
+- [ ] Implementar HTTPS
+- [ ] Usar password_hash() para contraseñas
+- [ ] Implementar rate limiting
+- [ ] Agregar logs de auditoría
+- [ ] Configurar permisos de archivos
+- [ ] Deshabilitar error_reporting en producción
+
+---
+
+## 📈 Mejoras Futuras
+
+- [ ] Sistema de notificaciones en tiempo real
+- [ ] Chat entre maestros y estudiantes
+- [ ] Subida de archivos para tareas
+- [ ] Calendario de actividades
+- [ ] Exportar reportes a PDF/Excel
+- [ ] API REST completa
+- [ ] Autenticación OAuth2
+- [ ] Sistema de mensajería interna
+- [ ] Videoconferencias integradas
+- [ ] App móvil (React Native)
+
+---
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add: nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+### Guía de Estilo
+
+- Usar camelCase para variables PHP
+- Comentarios en español
+- Seguir PSR-12 para PHP
+- Indentación de 4 espacios
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+## 👨‍💻 Autor
+
+**Isaac Rubio Iñiguez**
+- GitHub: https://github.com/FolkDrake97
+- https://github.com/FolkDrake97/-Proyecto-Final-.git
+
+
+---
+
+## 🙏 Agradecimientos
+
+- Bootstrap por el framework CSS
+- Chart.js por las gráficas
+- Font Awesome por los iconos
+- La comunidad de PHP
+
+
+**⭐ Si te gusta este proyecto, no olvides darle una estrella!**
